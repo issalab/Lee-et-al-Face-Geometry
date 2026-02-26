@@ -1,0 +1,7 @@
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Large assets
+*.zip
+*.glb
+*.gltf
