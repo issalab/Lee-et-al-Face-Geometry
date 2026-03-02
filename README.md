@@ -1,6 +1,21 @@
 # Lee-et-al-Face-Geometry
 
-This document provides a high-level overview of the combined codebase supporting the Lee et al. face project. The repository is organized into two main sub-projects: **`proj-face`** (model training, testing, and analysis) and **`apple_facestim_generation`** (stimulus generation from face capture). Pre-trained models, data, and rendered stimuli are available via Google Drive (see links below).
+## Associated Manuscript
+
+This repository accompanies the following preprint:
+
+**Efficient task generalization and humanlike face perception in models that learn to discriminate face geometry**  
+Seojin Lee, Josh Ying, Ahana Dey, You-Nah Jeon, Elias B. Issa  
+
+bioRxiv (2026)  
+DOI: https://doi.org/10.64898/2026.01.31.703048  
+
+Preprint available at:  
+https://www.biorxiv.org/content/10.64898/2026.01.31.703048v1
+
+New results and updates will follow this preprint.
+
+The repository is organized into two main sub-projects: **`proj-face`** (model training, testing, and analysis) and **`apple_facestim_generation`** (stimulus generation from face capture). Pre-trained models, data, and rendered stimuli are available via Google Drive (see links below).
 
 ---
 
@@ -9,10 +24,11 @@ This document provides a high-level overview of the combined codebase supporting
 .
 ├── proj-face/                         # Model training, testing, RDM analysis
 ├── apple_facestim_generation/         # Stimulus generation via Apple ARKit
-├── scenefiles/                        # JSON scene files for model test stimuli generation
-├── human_behav_scenefiles/            # JSON scene files for human behavioral test stimuli generation
+├── scenefiles_anonymized/                        # JSON scene files for model test stimuli generation
+├── human_behav_scenefiles_anonymized/            # JSON scene files for human behavioral test stimuli generation
+├── human_behavioral_data/            
 └── apple_facestim_generation/
-    └── scaledCoordsMax_all_updated.mat  KEY FILE: all face identity & expression vertex matrices
+    └── scaledCoordsMax_all_anonymized.mat  KEY FILE: all face identity & expression vertex matrices
 ```
 
 ---
@@ -42,7 +58,7 @@ This sub-project contains all notebooks and scripts for training and evaluating 
 | `MyIdeal3d.ipynb` | Compute performance and i1 from ideal 3D observer images; compare with biological data |
 | `MyMain.ipynb` | Extract model features, compute model i1, compare with biological i1 |
 | `MyRegAnalysis.ipynb` | Use latent variables (`vbsli*`) to predict model or biological i1 via regression |
-| `MyRDMAnalysis.ipynb` | Generate RDMs and compare model RDMs to the face space distance matrix (`scaledCoordsMax_all_updated.mat`) |
+| `MyRDMAnalysis.ipynb` | Generate RDMs and compare model RDMs to the face space distance matrix (`scaledCoordsMax_all_anonymized.mat`) |
 
 ### RDM Output Files (`rdm/`)
 
@@ -59,7 +75,7 @@ This sub-project contains MATLAB code (and one Swift iPhone app) for capturing 3
 
 ### Key Data File
 
-**`apple_facestim_generation/scaledCoordsMax_all_updated.mat`**
+**`apple_facestim_generation/scaledCoordsMax_all_anonymized.mat`**
 
 > This is the central data file for the entire stimulus set. It contains the vertex matrices summarizing **all face identities and expressions** used in the project. Both model and behavioral stimuli are derived from this file. Start here if you need to understand or reproduce any stimuli.
 
@@ -86,12 +102,47 @@ Apply betas from Step 2 to generate faces with arbitrary expressions. See `StimG
 
 | Folder | Contents |
 |---|---|
-| `scenefiles/` | JSON scene files used to render **model test stimuli** |
-| `human_behav_scenefiles/` | JSON scene files used to render **human behavioral test stimuli** |
+| `scenefiles_anonymized/` | JSON scene files used to render **model test stimuli** |
+| `human_behav_scenefiles_anonymized/` | JSON scene files used to render **human behavioral test stimuli** |
 
-These scene files drive the rendering pipeline and reference face meshes built from `scaledCoordsMax_all_updated.mat`.
+These scene files drive the rendering pipeline and reference face meshes built from `scaledCoordsMax_all_anonymized.mat`.
+
 
 ---
+
+## Human Behavioral Data
+
+Human psychophysics data used for model–human behavioral comparisons are provided in:
+
+human_behavior/
+
+
+### Contents
+
+- `human_trials.csv`  
+  Pooled trial-level responses across all participants performing a two-alternative forced-choice (2AFC) face matching task.
+
+- `human_emotion_confusion.npy`  
+- `human_identity_confusion.npy`  
+  Row-normalized human confusion matrices used for model comparison.
+
+- `human_split_halves/`  
+  Five independent split-half partitions (A/B) used to estimate behavioral reliability and noise ceilings.
+
+### Behavioral Task
+
+Participants performed match-to-sample face recognition tasks:
+
+- **Identity discrimination** (7 identities)
+- **Emotion recognition** (7 expressions)
+
+Each trial required selecting which of two faces matched a briefly presented sample image.
+
+These data provide the human behavioral benchmark reported in Fig. 6 of the manuscript.
+
+---
+
+
 
 ## Dependencies
 
